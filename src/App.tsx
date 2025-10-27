@@ -57,14 +57,20 @@ export const App: React.FC = () => {
 
   // 8. Filter by status
   const filteredByStatus = todos.filter(todo => {
-    if (status === 'completed') return todo.completed;
-    if (status === 'active') return !todo.completed;
+    if (status === 'completed') {
+      return todo.completed;
+    }
+
+    if (status === 'active') {
+      return !todo.completed;
+    }
+
     return true;
   });
 
   // 9. Filter by query
   const filteredTodos = filteredByStatus.filter(todo =>
-    todo.title.toLowerCase().includes(query.toLowerCase())
+    todo.title.toLowerCase().includes(query.toLowerCase()),
   );
 
   return (
