@@ -1,34 +1,67 @@
-/* eslint-disable max-len */
 import React from 'react';
-import 'bulma/css/bulma.css';
-import '@fortawesome/fontawesome-free/css/all.css';
+import { Todo } from './types/Todo';
 
-import { TodoList } from './components/TodoList';
-import { TodoFilter } from './components/TodoFilter';
-import { TodoModal } from './components/TodoModal';
-import { Loader } from './components/Loader';
+interface Props {
+  todos: Todo[];
+  onShow: (todo: Todo) => void;
+}
 
-export const App: React.FC = () => {
-  return (
-    <>
-      <div className="section">
-        <div className="container">
-          <div className="box">
-            <h1 className="title">Todos:</h1>
+export const TodoList: React.FC<Props> = ({ todos, onShow }) => (
+  <table className="table is-narrow is-fullwidth">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>
+          <span className="icon">
+            <i className="fas fa-check" />
+          </span>
+        </th>
+        <th>Title</th>
+        <th />
+      </tr>
+    </thead>
 
-            <div className="block">
-              <TodoFilter />
-            </div>
+    <tbody>
+      {todos.map(todo => (
+        <tr
+          key={todo.id}
+          data-cy="todo"
+          className={todo.completed ? 'has-background-info-light' : ''}
+        >
+          <td className="is-vcentered">{todo.id}</td>
 
-            <div className="block">
-              <Loader />
-              <TodoList />
-            </div>
-          </div>
-        </div>
-      </div>
+          <td className="is-vcentered">
+            {todo.completed && (
+              <span className="icon" data-cy="iconCompleted">
+                <i className="fas fa-check" />
+              </span>
+            )}
+          </td>
 
-      <TodoModal />
-    </>
-  );
-};
+          <td className="is-vcentered is-expanded">
+            <p
+              className={
+                todo.completed ? 'has-text-success' : 'has-text-danger'
+              }
+            >
+              {todo.title}
+            </p>
+          </td>
+
+          <td className="has-text-right is-vcentered">
+            <button
+              data-cy="selectButton"
+              className="button"
+              type="button"
+              onClick={() => onShow(todo)}
+            >
+              <span className="icon">
+                <i className="far fa-eye" />
+              </span>
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+);
